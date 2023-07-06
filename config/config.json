@@ -7,17 +7,17 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "Emmaculate.",
-    "database": "jobsearch_db",
-    "host": "localhost",
+    "username": "freedb_jordan_junior",
+    "password": "7sTM2@6mXSFf!Q9",
+    "database": "freedb_jobsearch_db",
+    "host": "sql.freedb.tech",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "Emmaculate.",
-    "database": "jobsearch_db",
-    "host": "localhost",
+    "username": "freedb_jordan_junior",
+    "password": "7sTM2@6mXSFf!Q9",
+    "database": "freedb_jobsearch_db",
+    "host": "sql.freedb.tech",
     "dialect": "mysql"
   }
 }

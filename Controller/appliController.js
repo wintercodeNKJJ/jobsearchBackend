@@ -48,8 +48,8 @@ const handleApp = (req,res)=>{
 }
 
 const getApplicantstoJob = async(req,res)=>{
-    let sequelize = new Sequelize('jobsearch_db','root','Emmaculate.',{
-        host: 'localhost',
+    let sequelize = new Sequelize('freedb_jobsearch_db','freedb_jordan_junior','7sTM2@6mXSFf!Q9',{
+        host: 'sql.freedb.tech',
         dialect: 'mysql'
     });
     console.log("request data body",req.body.id)
