@@ -36,7 +36,7 @@ const register = async(req,res) =>{
         res.send(JSON.parse(res));
         return res
     }).catch((UniqueConstraintError)=>{
-        res.send(JSON.parse("Error occured"));
+        res.send(JSON.parse('Error occured'));
     })
 
 }
