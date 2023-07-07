@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
  */
 const register = async(req,res) =>{
     // check if that user already exists.
-    const user = await user.findOne({
+    const user1 = await user.findOne({
         where: {
             [Op.or]:[
                 {name: req.body.name}
@@ -22,7 +22,7 @@ const register = async(req,res) =>{
     });
 
     // if user exists interupt creation
-    if (user){
+    if (user1){
         res.send('this user and email is already taken!')
         return 0;
     };
