@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "freedb_jordan_junior",
-    "password": "7sTM2@6mXSFf!Q9",
-    "database": "freedb_jobsearch_db",
-    "host": "sql.freedb.tech",
+    "username": "root",
+    "password": "Emmaculate.",
+    "database": "jobsearch_db",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {

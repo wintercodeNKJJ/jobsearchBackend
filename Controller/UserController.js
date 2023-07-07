@@ -23,7 +23,8 @@ const register = async(req,res) =>{
 
     // if user exists interupt creation
     if (user1){
-        res.send(JSON.parse('this user and email is already taken!'))
+        const message = "this user and email is already taken!"
+        res.send(JSON.stringify(message))
         return 0;
     };
     const password = await bcrypt.hash(req.body.password,10).then((res)=>{
@@ -33,12 +34,13 @@ const register = async(req,res) =>{
     // Create user
     const crtuser = await user.create(req.body).then((res)=>{
         const token = getToken(res)
-        res.send(JSON.parse(res));
         return res
-    }).catch((UniqueConstraintError)=>{
-        res.send(JSON.parse('Error occured'));
+    }).catch(UniqueConstraintError =>{
+        const message = `error occured ${UniqueConstraintError}`
+        res.send(JSON.stringify(message));
     })
 
+    res.send(crtuser);
 }
 
 /**
@@ -61,7 +63,7 @@ const login = async(req,res,{auth}) =>{
     });
 
     const match = await bcrypt.compare(req.params.password, user1.password);
-    if (!match){res.send(JSON.parse('Wrong Password'))};
+    if (!match){res.send(JSON.stringify('Wrong Password'))};
 
     const token = getToken(user1);
     res.send({...user.dataValues,token:token});
