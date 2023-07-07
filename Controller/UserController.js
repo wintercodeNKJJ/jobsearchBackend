@@ -33,7 +33,7 @@ const register = async(req,res) =>{
     // Create user
     const crtuser = await user.create(req.body).then((res)=>{
         const token = getToken(res)
-        res.send(res);
+        res.send(JSON.parse(res));
         return res
     }).catch((UniqueConstraintError)=>{
         res.send(JSON.parse("Error occured"));
