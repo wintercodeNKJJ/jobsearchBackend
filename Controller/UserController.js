@@ -1,6 +1,6 @@
 const { Employer,Jobbody,Joboffer,Jobdesc,user,Application } = require("../models");
 const {getToken,getUser} = require('../api/auth/auth');
-const { Op } = require("sequelize");
+const { UniqueConstraintError, Op } = require("sequelize");
 const bcrypt = require('bcrypt');
 
 /**
@@ -23,7 +23,7 @@ const register = async(req,res) =>{
 
     // if user exists interupt creation
     if (user1){
-        res.send('this user and email is already taken!')
+        res.send(JSON.parse('this user and email is already taken!'))
         return 0;
     };
     const password = await bcrypt.hash(req.body.password,10).then((res)=>{
@@ -31,13 +31,14 @@ const register = async(req,res) =>{
     });
     req.body.password = password
     // Create user
-    const crtuser = user.create(req.body).catch((err)=>{
-        if(err){console.log(err);}
+    const crtuser = await user.create(req.body).then((res)=>{
+        const token = getToken(res)
+        res.send(res);
+        return res
+    }).catch((UniqueConstraintError)=>{
+        res.send(JSON.parse("Error occured"));
     })
-    
-    // Create user token
-    const token = getToken(crtuser)
-    res.send(crtuser);
+
 }
 
 /**
@@ -48,7 +49,7 @@ const register = async(req,res) =>{
  * @returns user loged in
  */
 const login = async(req,res,{auth}) =>{
-    let user = await user.findOne({
+    let user1 = await user.findOne({
         where: {
             [Op.or]:[
                 {name: req.params.name},
@@ -59,10 +60,10 @@ const login = async(req,res,{auth}) =>{
         return res
     });
 
-    const match = await bcrypt.compare(req.params.password, user.password);
+    const match = await bcrypt.compare(req.params.password, user1.password);
     if (!match){res.send(JSON.parse('Wrong Password'))};
 
-    const token = getToken(user);
+    const token = getToken(user1);
     res.send({...user.dataValues,token:token});
 }
 
@@ -87,7 +88,7 @@ const remove = async(req,res) =>{
  * @returns user
  */
 const getaUser = async(req,res) =>{
-    const user = await user.findOne({
+    const user1 = await user.findOne({
         where:{
             name: req.body.name,
         }
@@ -95,18 +96,18 @@ const getaUser = async(req,res) =>{
         return user
     });
 
-    if(!user){
+    if(!user1){
         // throw new Error('this user is not found!')
         res.send(JSON.stringify("User does not Exist!"))
         return 0;
     }
-    const match = await bcrypt.compare(req.body.password, user.password);
-    console.log('match result',req.body.password,user.password)
+    const match = await bcrypt.compare(req.body.password, user1.password);
+    console.log('match result',req.body.password,user1.password)
 
     if (!match) {res.send(JSON.stringify('wrong password!'));
     return 0};
     // console.log(user)
-    res.send(user)
+    res.send(user1)
 }
 
 module.exports = {
