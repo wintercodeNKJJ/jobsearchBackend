@@ -2,6 +2,16 @@ const {Sequelize} = require("sequelize");
 
 const { joboffer,user,Application } = require("../models");
 
+let sequelize = new Sequelize('freedb_jobsearch_db','freedb_jordan_junior','7sTM2@6mXSFf!Q9',{
+    host: 'sql.freedb.tech',
+    dialect: 'mysql'
+});
+
+// let sequelize = new Sequelize('jobsearch_db','root','Emmaculate.',{
+//     host: 'localhost',
+//     dialect: 'mysql'
+// });
+
 const create = async(req,res) =>{
     // find existing job
     joboffer.findOne({where: {
@@ -28,10 +38,6 @@ const edit = (req,res) =>{
 }
 
 const jobsApplied = async(req,res)=>{
-    let sequelize = new Sequelize('freedb_jobsearch_db','freedb_jordan_junior','7sTM2@6mXSFf!Q9',{
-        host: 'sql.freedb.tech',
-        dialect: 'mysql'
-    });
     const jobs = await sequelize.query(`SELECT * FROM joboffers WHERE id IN (SELECT job_id FROM applications WHERE user_id = ${req.body.id})`,{
         model: joboffer,
         mapToModel: true
@@ -41,10 +47,6 @@ const jobsApplied = async(req,res)=>{
 }
 
 const jobsCreated = async(req,res)=>{
-    let sequelize = new Sequelize('freedb_jobsearch_db','freedb_jordan_junior','7sTM2@6mXSFf!Q9',{
-        host: 'sql.freedb.tech',
-        dialect: 'mysql'
-    });
     const jobs = await sequelize.query(`SELECT * FROM joboffers WHERE employerId = ${req.body.id}`,{
         model: joboffer,
         mapToModel: true

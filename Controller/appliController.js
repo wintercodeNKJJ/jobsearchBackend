@@ -1,6 +1,24 @@
 const { application,user } = require("../models");
 const {UniqueConstraintError,Error,Sequelize} = require("sequelize");
 
+let sequelize = new Sequelize('freedb_jobsearch_db','freedb_jordan_junior','7sTM2@6mXSFf!Q9',{
+    host: 'sql.freedb.tech',
+    dialect: 'mysql'
+});
+
+// "development": {
+//     "username": "root",
+//     "password": "Emmaculate.",
+//     "database": "jobsearch_db",
+//     "host": "localhost",
+//     "dialect": "mysql"
+//   },
+
+// let sequelize = new Sequelize('jobsearch_db','root','Emmaculate.',{
+//     host: 'localhost',
+//     dialect: 'mysql'
+// });
+
 const create = (req, res)=>{
     return application.create(req.body).then((resp)=>{
         res.send(JSON.stringify(resp))
@@ -48,10 +66,6 @@ const handleApp = (req,res)=>{
 }
 
 const getApplicantstoJob = async(req,res)=>{
-    let sequelize = new Sequelize('freedb_jobsearch_db','freedb_jordan_junior','7sTM2@6mXSFf!Q9',{
-        host: 'sql.freedb.tech',
-        dialect: 'mysql'
-    });
     console.log("request data body",req.body.id)
     const jobs = await sequelize.query(`SELECT * FROM users WHERE id IN (SELECT user_id FROM applications WHERE job_id = ${req.body.id})`,{
         model: user,
